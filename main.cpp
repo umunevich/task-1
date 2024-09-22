@@ -1,4 +1,5 @@
 // main.cpp
+// C++ compiler g++
 // created by Yana Utochkina
 
 #include <format>
