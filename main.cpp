@@ -1,5 +1,4 @@
 // main.cpp
-// C++ compiler g++
 // created by Yana Utochkina
 
 #include <format>
@@ -24,7 +23,7 @@ std::vector<double> generated_map_to_probabilities(const std::vector<int>& numbe
 double calculate_max_difference(const std::vector<double>& input_probabilities, const std::vector<double>& output_probabilities);
 
 template <typename T>
-std::ofstream& operator<<(std::ofstream& output_file, const std::vector<T>& vec);
+std::ostream& operator<<(std::ostream& output, const std::vector<T>& vec);
 
 int main(int argc, const char * argv[]) {
     try {
@@ -45,9 +44,8 @@ int main(int argc, const char * argv[]) {
         std::vector<double> input_probabilities_double = calculate_probabilities(input_probabilities_int);
         std::vector<double> output_probabilities_double = generated_map_to_probabilities(numbers, generated_map);
         double max_difference = calculate_max_difference(input_probabilities_double, output_probabilities_double);
-        std::ofstream output_file = std::ofstream(argv[2]);
 
-        output_file << numbers << input_probabilities_double << output_probabilities_double << max_difference << std::endl;
+        std::cout << numbers << input_probabilities_double << output_probabilities_double << max_difference << std::endl;
 
         return 0;
     }
@@ -57,7 +55,7 @@ int main(int argc, const char * argv[]) {
 }
 
 void processing_args(int argc, const char *argv[]) {
-    if (argc != 3)
+    if (argc != 2)
         throw std::invalid_argument("usage: task1 input_file.txt output_file.txt");
 }
 
@@ -120,14 +118,14 @@ std::vector<double> generated_map_to_probabilities(const std::vector<int>& numbe
 }
 
 template <typename T>
-std::ofstream& operator<<(std::ofstream& output_file, const std::vector<T>& vec) {
-    output_file << std::fixed;
-    output_file << std::setprecision(3);
+std::ostream& operator<<(std::ostream& output, const std::vector<T>& vec) {
+    output << std::fixed;
+    output << std::setprecision(3);
     for (auto it : vec) {
-        output_file << std::setw(8) << it;
+        output << std::setw(8) << it;
     }
-    output_file << '\n';
-    return output_file;
+    output << '\n';
+    return output;
 }
 
 double calculate_max_difference(const std::vector<double>& input_probabilities, const std::vector<double>& output_probabilities) {
