@@ -10,17 +10,12 @@
 #include <iomanip>
 
 #include "Random.h"
+#include "calculate.h"
 
 void processing_args(int argc, const char *argv[]);
 std::vector<int> read_file(std::ifstream& input_file);
-std::map<int, int> generate(const int& n, Random& random, const std::vector<int>& numbers);
 
-std::vector<double> calculate_probabilities(const std::vector<int>& probabilities_int);
-template <typename T>
-double calculate_denominator(const std::vector<T>& nums);
-void convert_probabilities(std::vector<double>& probabilities, const double& denominator);
-std::vector<double> generated_map_to_probabilities(const std::vector<int>& numbers, std::map<int, int>& generated_map);
-double calculate_max_difference(const std::vector<double>& input_probabilities, const std::vector<double>& output_probabilities);
+std::map<int, int> generate(const int& n, Random& random, const std::vector<int>& numbers);
 
 template <typename T>
 std::ostream& operator<<(std::ostream& output, const std::vector<T>& vec);
@@ -41,9 +36,9 @@ int main(int argc, const char * argv[]) {
 
         std::map<int, int> generated_map = generate(input_vector[0], random, numbers);
 
-        std::vector<double> input_probabilities_double = calculate_probabilities(input_probabilities_int);
-        std::vector<double> output_probabilities_double = generated_map_to_probabilities(numbers, generated_map);
-        double max_difference = calculate_max_difference(input_probabilities_double, output_probabilities_double);
+        std::vector<double> input_probabilities_double = calculate::probabilities(input_probabilities_int);
+        std::vector<double> output_probabilities_double = calculate::generated_map_to_probabilities(numbers, generated_map);
+        double max_difference = calculate::max_difference(input_probabilities_double, output_probabilities_double);
 
         std::cout << numbers << input_probabilities_double << output_probabilities_double << max_difference << std::endl;
 
@@ -75,48 +70,6 @@ std::vector<int> read_file(std::ifstream& input_file) {
     return input_vector;
 }
 
-std::map<int, int> generate(const int& n, Random& random, const std::vector<int>& numbers) {
-    std::map<int, int> generated_map;
-    for (auto it : numbers) {
-        generated_map.insert(std::pair<int, int>(it, 0));
-    }
-    for (int i = 0; i < n; i++) {
-        generated_map[random()] += 1;
-    }
-    return generated_map;
-}
-
-std::vector<double> calculate_probabilities(const std::vector<int>& probabilities_int) {
-    double denominator = calculate_denominator(probabilities_int);
-    std::vector<double> probabilities_double = std::vector<double>(probabilities_int.begin(), probabilities_int.end());
-    convert_probabilities(probabilities_double, denominator);
-    return probabilities_double;
-}
-
-template <typename T>
-double calculate_denominator(const std::vector<T>& nums) {
-    double denominator = 0;
-    for (auto it : nums)
-        denominator += it;
-    return denominator;
-}
-
-void convert_probabilities(std::vector<double>& probabilities, const double& denominator) {
-    for (auto &it : probabilities)
-        it /= denominator;
-}
-
-std::vector<double> generated_map_to_probabilities(const std::vector<int>& numbers, std::map<int, int>& generated_map) {
-    std::vector<double> probabilities_double = std::vector<double>(numbers.size(), 0);
-    double denominator = 0;
-    for (int i = 0; i < numbers.size(); i++) {
-        probabilities_double[i] = generated_map[numbers[i]];
-        denominator += probabilities_double[i];
-    }
-    convert_probabilities(probabilities_double, denominator);
-    return probabilities_double;
-}
-
 template <typename T>
 std::ostream& operator<<(std::ostream& output, const std::vector<T>& vec) {
     output << std::fixed;
@@ -128,13 +81,13 @@ std::ostream& operator<<(std::ostream& output, const std::vector<T>& vec) {
     return output;
 }
 
-double calculate_max_difference(const std::vector<double>& input_probabilities, const std::vector<double>& output_probabilities) {
-    double max_difference = 0.0;
-    double t = 0.0;
-    for (int i = 0; i < input_probabilities.size(); i++) {
-        t = fabs(input_probabilities[i] - output_probabilities[i]);
-        if (t > max_difference)
-            max_difference = t;
+std::map<int, int> generate(const int& n, Random& random, const std::vector<int>& numbers) {
+    std::map<int, int> generated_map;
+    for (auto it : numbers) {
+        generated_map.insert(std::pair<int, int>(it, 0));
     }
-    return max_difference;
+    for (int i = 0; i < n; i++) {
+        generated_map[random()] += 1;
+    }
+    return generated_map;
 }
