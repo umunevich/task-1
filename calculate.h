@@ -4,15 +4,8 @@
 #ifndef CALCULATE_H
 #define CALCULATE_H
 
-#ifndef VECTOR
-#define VECTOR
 #include <vector>
-#endif
-
-#ifndef MAP
-#define MAP
 #include <map>
-#endif
 
 namespace calculate {
     std::vector<double> probabilities(const std::vector<int>& probabilities_int);
