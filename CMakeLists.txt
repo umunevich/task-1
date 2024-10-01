@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(task1 main.cpp
         Random.cpp
-        Random.h)
+        calculate.cpp)
