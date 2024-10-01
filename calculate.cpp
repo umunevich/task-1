@@ -2,6 +2,7 @@
 // created by Yana Utochkina
 
 #include "calculate.h"
+#include <algorithm>
 
 template <typename T>
 double calculate_denominator(const std::vector<T>& nums) {
@@ -38,7 +39,7 @@ double calculate::max_difference(const std::vector<double>& input_probabilities,
     double max_difference = 0.0;
     double t = 0.0;
     for (int i = 0; i < input_probabilities.size(); i++) {
-        t = fabs(input_probabilities[i] - output_probabilities[i]);
+        t = std::abs(input_probabilities[i] - output_probabilities[i]);
         if (t > max_difference)
             max_difference = t;
     }
