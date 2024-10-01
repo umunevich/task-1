@@ -1,7 +1,6 @@
 // main.cpp
 // created by Yana Utochkina
 
-#include <format>
 #include <iostream>
 #include <stdexcept>
 #include <fstream>
